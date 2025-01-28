@@ -1,26 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { counterStore } from "./utils/counterStore";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  CounterState,
+  increment,
+  decrement,
+} from "./features/counter/counterSlice";
+import { Link } from "react-router-dom";
 
-const App: React.FC = () => {
-  const [state, setState] = useState(counterStore.getState());
-
-  const increment = () =>
-    counterStore.dispatch({ type: "counter/incremented" });
-  const decrement = () =>
-    counterStore.dispatch({ type: "counter/decremented" });
-
-  useEffect(() => {
-    const unsubscribe = counterStore.subscribe(() => {
-      setState(counterStore.getState());
-    });
-    return unsubscribe;
-  }, []);
+const App = () => {
+  const useCountSelector = useSelector.withTypes<CounterState>();
+  const count = useCountSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
 
   return (
     <div>
-      <span>{state.value}</span>
-      <button onClick={increment}>increment</button>
-      <button onClick={decrement}>decrement</button>
+      <div>
+        <button
+          aria-label="Increment value"
+          onClick={() => dispatch(increment())}
+        >
+          Increment
+        </button>
+        <span>{count}</span>
+        <button
+          aria-label="Decrement value"
+          onClick={() => dispatch(decrement())}
+        >
+          Decrement
+        </button>
+      </div>
+      <Link to="/about">About</Link>
     </div>
   );
 };
