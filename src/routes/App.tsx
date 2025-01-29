@@ -3,7 +3,7 @@ import {
   CounterState,
   increment,
   decrement,
-} from "./features/counter/counterSlice";
+} from "../features/counter/counterSlice";
 import { Link } from "react-router-dom";
 
 const App = () => {
